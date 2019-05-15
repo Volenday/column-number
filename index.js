@@ -9,6 +9,7 @@ export default props => {
 		id,
 		multiple = false,
 		onChange,
+		onChangeText,
 		style = {},
 		...defaultProps
 	} = props;
@@ -17,7 +18,7 @@ export default props => {
 		...defaultProps,
 		style: { ...style, display: 'flex', alignItems: 'center' },
 		headerStyle: { ...headerStyle, display: 'flex', alignItems: 'center' },
-		Cell: ({ original, value }) => {
+		Cell: ({ index, original, value }) => {
 			if (editable && !multiple) {
 				if (format.length != 0) {
 					let blocks = format.map(d => parseInt(d.characterLength)),
@@ -42,7 +43,8 @@ export default props => {
 						<input
 							type="number"
 							class="form-control"
-							defaultValue={value}
+							value={value}
+							onChange={e => onChangeText(index, id, e.target.value)}
 							onKeyDown={e => {
 								if (e.key === 'Enter') {
 									onChange({ Id: original.Id, [id]: e.target.value });
