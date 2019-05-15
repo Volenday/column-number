@@ -2,10 +2,21 @@ import React from 'react';
 import Cleave from 'cleave.js/react';
 
 export default props => {
-	const { editable = false, format = [], id, multiple = false, onChange, ...defaultProps } = props;
+	const {
+		editable = false,
+		format = [],
+		headerStyle = {},
+		id,
+		multiple = false,
+		onChange,
+		style = {},
+		...defaultProps
+	} = props;
 
 	return {
 		...defaultProps,
+		style: { ...style, display: 'flex', alignItems: 'center' },
+		headerStyle: { ...headerStyle, display: 'flex', alignItems: 'center' },
 		Cell: ({ original, value }) => {
 			if (editable && !multiple) {
 				if (format.length != 0) {
