@@ -7,11 +7,11 @@
 Using npm:
 
 ```sh
-npm install --save column-number
+npm install --save @volenday/column-number
 ```
 
 or using yarn:
 
 ```sh
-yarn add column-number
+yarn add @volenday/column-number
 ```
