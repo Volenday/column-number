@@ -1,5 +1,4 @@
 const webpack = require('webpack');
-const path = require('path');
 
 module.exports = {
 	mode: 'production',
@@ -52,6 +51,10 @@ module.exports = {
 		filename: '[name].min.js',
 		chunkFilename: '[name].[chunkhash].chunk.min.js',
 		libraryTarget: 'commonjs2'
+	},
+	externals: {
+		'cleave.js': 'commonjs2 cleave.js',
+		react: 'commonjs2 react'
 	},
 	plugins: [
 		new webpack.optimize.AggressiveMergingPlugin(),
