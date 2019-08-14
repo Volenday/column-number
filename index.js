@@ -1,6 +1,8 @@
 import React from 'react';
 import Cleave from 'cleave.js/react';
 
+import './styles.css';
+
 export default props => {
 	const {
 		editable = false,
@@ -43,7 +45,7 @@ export default props => {
 					return (
 						<input
 							type="number"
-							class="form-control"
+							class="form-control col-input-number"
 							value={value}
 							onBlur={e => onChange({ Id: original.Id, [id]: e.target.value })}
 							onChange={e => onChangeText(index, id, e.target.value)}
@@ -77,7 +79,7 @@ export default props => {
 			return (
 				<input
 					type="number"
-					class="form-control"
+					class="form-control col-input-number"
 					onChange={e => onChange(e.target.value)}
 					value={filter ? filter.value : ''}
 					placeholder="Search..."
