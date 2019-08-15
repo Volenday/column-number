@@ -34,6 +34,7 @@ export default props => {
 							onKeyDown={e => {
 								if (e.key === 'Enter') {
 									onChange({ Id: original.Id, [id]: e.target.rawValue });
+									e.target.blur();
 								}
 								return;
 							}}
@@ -52,6 +53,7 @@ export default props => {
 							onKeyDown={e => {
 								if (e.key === 'Enter') {
 									onChange({ Id: original.Id, [id]: e.target.value });
+									e.target.blur();
 								}
 								return;
 							}}
