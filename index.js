@@ -1,5 +1,6 @@
 import React from 'react';
 import Cleave from 'cleave.js/react';
+import InputNumber from '@volenday/input-number';
 
 import './styles.css';
 
@@ -42,40 +43,38 @@ export default props => {
 							value={value ? value : ''}
 						/>
 					);
-				} else {
-					return (
-						<input
-							type="number"
-							class="form-control col-input-number"
-							value={value}
-							onBlur={e => onChange({ Id: original.Id, [id]: e.target.value })}
-							onChange={e => onChangeText(index, id, e.target.value)}
-							onKeyDown={e => {
-								if (e.key === 'Enter') {
-									onChange({ Id: original.Id, [id]: e.target.value });
-									e.target.blur();
-								}
-								return;
-							}}
-						/>
-					);
 				}
-			} else {
-				if (format.length != 0) {
-					let blocks = format.map(d => parseInt(d.characterLength)),
-						delimiters = format.map(d => d.delimiter);
-					delimiters.pop();
-					return (
-						<Cleave
-							disabled={true}
-							options={{ delimiters, blocks, numericOnly: true }}
-							value={value}
-							style={{ padding: 0, border: 'none', backgroundColor: 'transparent' }}
-						/>
-					);
-				}
-				return <span>{value}</span>;
+
+				return (
+					<InputNumber
+						id={id}
+						onBlur={e => onChange({ Id: original.Id, [id]: e.target.value })}
+						onChange={(field, value) => onChangeText(index, field, value)}
+						onPressEnter={e => {
+							onChange({ Id: original.Id, [id]: e.target.value });
+							e.target.blur();
+						}}
+						withLabel={false}
+						value={value}
+					/>
+				);
 			}
+
+			if (format.length != 0) {
+				let blocks = format.map(d => parseInt(d.characterLength)),
+					delimiters = format.map(d => d.delimiter);
+				delimiters.pop();
+				return (
+					<Cleave
+						disabled={true}
+						options={{ delimiters, blocks, numericOnly: true }}
+						value={value}
+						style={{ padding: 0, border: 'none', backgroundColor: 'transparent' }}
+					/>
+				);
+			}
+
+			return <span>{value}</span>;
 		},
 		Filter: ({ filter, onChange }) => {
 			return (
