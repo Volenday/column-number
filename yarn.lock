@@ -1080,10 +1080,10 @@
     validate.js "^0.13.1"
     webpack "~4.39.3"
 
-"@volenday/input-number@~0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@volenday/input-number/-/input-number-0.1.5.tgz#83525d52a0d2e8152517b50a0325c77d469661fc"
-  integrity sha512-hZbOi2x2lmDaGtLfYqO+MJGj+LafvIYfnd7CqdkLgfSTdKirn7HMay27jjZYiZI9Ryr/c5aAWK1GRwb7Vr6gIg==
+"@volenday/input-number@~0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@volenday/input-number/-/input-number-0.1.6.tgz#33be0244adeb269719108203e795507aef9a1277"
+  integrity sha512-KruC0Y4/lnwlDoqFHQ7EuSOXx/FwkhfNgMjp8+6n4fqOI2MqO1dHXxbPlkMIpkSrV5BPLh3k++mbgyUUwV8qXA==
   dependencies:
     "@volenday/input-date" "~0.1.22"
     antd "~3.23.2"
