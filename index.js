@@ -21,41 +21,29 @@ export default props => {
 		...defaultProps,
 		style: { ...style, display: 'flex', alignItems: 'center' },
 		headerStyle: { ...headerStyle, display: 'flex', alignItems: 'center' },
-		Cell: ({ index, original, value }) => {
+		Cell: ({ original, value }) => {
 			if (editable && !multiple) {
-				if (format.length != 0) {
-					let blocks = format.map(d => parseInt(d.characterLength)),
-						delimiters = format.map(d => d.delimiter);
-					delimiters.pop();
-					return (
-						<Cleave
-							autoComplete="off"
-							class="form-control"
-							onBlur={e => onChange({ Id: original.Id, [id]: e.target.rawValue })}
-							onKeyDown={e => {
-								if (e.key === 'Enter') {
-									onChange({ Id: original.Id, [id]: e.target.rawValue });
-									e.target.blur();
-								}
-								return;
-							}}
-							options={{ delimiters, blocks }}
-							value={value ? value : ''}
-						/>
-					);
-				}
-
 				return (
-					<InputNumber
-						id={id}
-						onBlur={e => onChange({ Id: original.Id, [id]: e.target.value })}
-						onChange={(field, value) => onChangeText(index, field, value)}
-						onPressEnter={e => {
-							onChange({ Id: original.Id, [id]: e.target.value });
-							e.target.blur();
-						}}
-						withLabel={false}
-						value={value}
+					<Formik
+						enableReinitialize={true}
+						initialValues={{ [id]: value }}
+						onSubmit={values => onChange({ ...values, Id: original.Id })}
+						validateOnBlur={false}
+						validateOnChange={false}
+						render={({ handleChange, submitForm, values }) => (
+							<InputNumber
+								format={format}
+								id={id}
+								onBlur={submitForm}
+								onChange={handleChange}
+								onPressEnter={e => {
+									submitForm(e);
+									e.target.blur();
+								}}
+								withLabel={false}
+								value={values[id]}
+							/>
+						)}
 					/>
 				);
 			}
