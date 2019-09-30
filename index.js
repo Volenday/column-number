@@ -74,7 +74,7 @@ export default props => {
 					validateOnBlur={false}
 					validateOnChange={false}
 					render={({ handleChange, submitForm, values }) => (
-						<InputText
+						<InputNumber
 							id="filter"
 							onBlur={submitForm}
 							onChange={e => {
