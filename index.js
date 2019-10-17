@@ -26,7 +26,7 @@ export default props => {
 		headerStyle: { ...headerStyle, display: 'flex', alignItems: 'center' },
 		Cell: ({ original, value }) => {
 			if (fileSize) {
-				return <span>{prettyBytes(value)}</span>;
+				return <span>{prettyBytes(value ? value : 0)}</span>;
 			}
 
 			if (editable && !multiple) {
