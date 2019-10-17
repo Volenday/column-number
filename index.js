@@ -1,6 +1,7 @@
 import React from 'react';
 import Cleave from 'cleave.js/react';
 import InputNumber from '@volenday/input-number';
+import prettyBytes from 'pretty-bytes';
 import { Formik } from 'formik';
 
 import './styles.css';
@@ -15,6 +16,7 @@ export default props => {
 		onChange,
 		onChangeText,
 		style = {},
+		fileSize,
 		...defaultProps
 	} = props;
 
@@ -23,6 +25,10 @@ export default props => {
 		style: { ...style, display: 'flex', alignItems: 'center' },
 		headerStyle: { ...headerStyle, display: 'flex', alignItems: 'center' },
 		Cell: ({ original, value }) => {
+			if (fileSize) {
+				return <span>{prettyBytes(value)}</span>;
+			}
+
 			if (editable && !multiple) {
 				return (
 					<Formik
