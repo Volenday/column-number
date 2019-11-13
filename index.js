@@ -6,20 +6,17 @@ import { Formik } from 'formik';
 
 import './styles.css';
 
-export default props => {
-	const {
-		editable = false,
-		format = [],
-		headerStyle = {},
-		id,
-		multiple = false,
-		onChange,
-		onChangeText,
-		style = {},
-		fileSize,
-		...defaultProps
-	} = props;
-
+export default ({
+	editable = false,
+	format = [],
+	headerStyle = {},
+	id,
+	multiple = false,
+	onChange,
+	style = {},
+	fileSize,
+	...defaultProps
+}) => {
 	return {
 		...defaultProps,
 		style: { ...style, display: 'flex', alignItems: 'center' },
@@ -36,8 +33,8 @@ export default props => {
 						initialValues={{ [id]: value }}
 						onSubmit={values => onChange({ ...values, Id: original.Id })}
 						validateOnBlur={false}
-						validateOnChange={false}
-						render={({ handleChange, submitForm, values }) => (
+						validateOnChange={false}>
+						{({ handleChange, submitForm, values }) => (
 							<InputNumber
 								format={format}
 								id={id}
@@ -51,7 +48,7 @@ export default props => {
 								value={values[id]}
 							/>
 						)}
-					/>
+					</Formik>
 				);
 			}
 
@@ -72,20 +69,26 @@ export default props => {
 			return <span>{value}</span>;
 		},
 		Filter: ({ filter, onChange }) => {
+			let timeout = null;
+
 			return (
 				<Formik
 					enableReinitialize={true}
 					initialValues={{ filter: filter ? filter.value : '' }}
 					onSubmit={values => onChange(values.filter)}
 					validateOnBlur={false}
-					validateOnChange={false}
-					render={({ handleChange, submitForm, values }) => (
+					validateOnChange={false}>
+					{({ handleChange, submitForm, values }) => (
 						<InputNumber
 							id="filter"
-							onBlur={submitForm}
 							onChange={e => {
 								handleChange(e);
-								if (values.filter != '' && e.target.value == '') submitForm(e);
+								if (values.filter != '' && e.target.value == '') {
+									submitForm(e);
+								} else {
+									timeout && clearTimeout(timeout);
+									timeout = setTimeout(() => submitForm(e), 300);
+								}
 							}}
 							onPressEnter={submitForm}
 							placeholder="Search..."
@@ -93,7 +96,7 @@ export default props => {
 							value={values.filter}
 						/>
 					)}
-				/>
+				</Formik>
 			);
 		}
 	};
