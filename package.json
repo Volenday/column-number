@@ -1,29 +1,21 @@
 {
 	"name": "@volenday/column-number",
-	"version": "0.1.11",
+	"version": "1.0.0",
 	"private": false,
 	"license": "MIT",
-	"author": "Jerome Miranda <jerome.m.miranda@gmail.com>",
+	"author": "Volenday <developers@volenday.com>",
 	"scripts": {
 		"dev": "webpack --progress --watch",
 		"build": "webpack --progress -p",
 		"prepublishOnly": "webpack --progress -p"
 	},
 	"main": "dist/index.min.js",
-	"peerDependencies": {
-		"@volenday/input-number": "~0.1.12",
-		"cleave.js": "~1.5.3",
-		"formik": "~1.5.8",
-		"pretty-bytes": "~5.3.0",
-		"react": "~16.10.2"
-	},
 	"dependencies": {
 		"@volenday/input-number": "^0.1.13",
 		"cleave.js": "~1.5.3",
 		"formik": "^2.0.4",
 		"pretty-bytes": "~5.3.0",
-		"react": "^16.11.0",
-		"webpack": "^4.41.2"
+		"react": "^16.11.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.7.2",
@@ -49,12 +41,14 @@
 		"@babel/runtime": "^7.7.2",
 		"babel-loader": "~8.0.6",
 		"babel-plugin-react-html-attrs": "^2.1.0",
+		"compression-webpack-plugin": "^3.0.0",
 		"core-js": "^3.4.1",
 		"css-loader": "~3.2.0",
 		"file-loader": "~4.2.0",
 		"node-sass": "^4.13.0",
 		"sass-loader": "~8.0.0",
 		"style-loader": "~1.0.0",
+		"webpack": "^4.41.2",
 		"webpack-cli": "^3.3.10"
 	}
 }
