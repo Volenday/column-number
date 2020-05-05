@@ -56,8 +56,9 @@ module.exports = {
 	externals: {
 		'@volenday/input-number': 'commonjs2 @volenday/input-number',
 		'cleave.js': 'commonjs2 cleave.js',
-		'pretty-bytes': 'commonjs2 pretty-bytes',
+		'cleave.js/react': 'commongjs2 cleave.js/react',
 		formik: 'commonjs formik',
+		'pretty-bytes': 'commonjs2 pretty-bytes',
 		react: 'commonjs2 react'
 	},
 	plugins: [

@@ -1,7 +1,5 @@
 import React from 'react';
-import Cleave from 'cleave.js/react';
 import InputNumber from '@volenday/input-number';
-import prettyBytes from 'pretty-bytes';
 import { Formik } from 'formik';
 
 import './styles.css';
@@ -25,6 +23,7 @@ export default ({
 			if (typeof value == 'undefined') return null;
 
 			if (fileSize) {
+				const prettyBytes = require('pretty-bytes');
 				return <span>{prettyBytes(value ? value : 0)}</span>;
 			}
 
@@ -54,7 +53,9 @@ export default ({
 				);
 			}
 
-			if (format.length != 0) {
+			if (format.length !== 0) {
+				const Cleave = require('cleave.js/react');
+
 				let blocks = format.map(d => parseInt(d.characterLength)),
 					delimiters = format.map(d => d.delimiter);
 				delimiters.pop();
