@@ -7,7 +7,7 @@ import './styles.css';
 export default ({ editable = false, format = [], id, multiple = false, onChange, fileSize, ...defaultProps }) => {
 	return {
 		...defaultProps,
-		Cell: ({ row, value }) => {
+		Cell: ({ row: { original }, value }) => {
 			if (typeof value == 'undefined') return null;
 
 			if (fileSize) {
@@ -20,7 +20,7 @@ export default ({ editable = false, format = [], id, multiple = false, onChange,
 					<Formik
 						enableReinitialize={true}
 						initialValues={{ [id]: value }}
-						onSubmit={values => onChange({ ...values, Id: row.Id })}
+						onSubmit={values => onChange({ ...values, Id: original.Id })}
 						validateOnBlur={false}
 						validateOnChange={false}>
 						{({ handleChange, submitForm, values }) => (
