@@ -54,12 +54,13 @@ module.exports = {
 		libraryTarget: 'commonjs2'
 	},
 	externals: {
-		'@volenday/input-number': 'commonjs2 @volenday/input-number',
-		'cleave.js': 'commonjs2 cleave.js',
-		'cleave.js/react': 'commongjs2 cleave.js/react',
-		formik: 'commonjs formik',
-		'pretty-bytes': 'commonjs2 pretty-bytes',
-		react: 'commonjs2 react'
+		'@volenday/input-number': '@volenday/input-number',
+		antd: 'antd',
+		'cleave.js': 'cleave.js',
+		'cleave.js/react': 'cleave.js/react',
+		'pretty-bytes': 'pretty-bytes',
+		react: 'react',
+		'react-hook-form': 'react-hook-form'
 	},
 	plugins: [
 		new webpack.optimize.AggressiveMergingPlugin(),
