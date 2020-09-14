@@ -60,6 +60,7 @@ module.exports = {
 		'cleave.js/react': 'cleave.js/react',
 		'pretty-bytes': 'pretty-bytes',
 		react: 'react',
+		'react-currency-input': 'react-currency-input',
 		'react-hook-form': 'react-hook-form'
 	},
 	plugins: [

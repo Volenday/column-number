@@ -4,6 +4,7 @@ import Cleave from 'cleave.js/react';
 import prettyBytes from 'pretty-bytes';
 import { Controller, useForm } from 'react-hook-form';
 import InputNumber from '@volenday/input-number';
+import CurrencyInput from 'react-currency-input';
 
 import './styles.css';
 
@@ -59,6 +60,24 @@ const Cell = memo(({ other: { editable, fileSize, format, id, multiple, onChange
 	}
 
 	if (format.length !== 0) {
+		const withCurrency = !!format.filter(d => d.type === 'currency').length;
+
+		if (withCurrency) {
+			const { decimalSeparator, prefix, sign, suffix, thousandSeparator } = format[0];
+			return (
+				<CurrencyInput
+					className="ant-input"
+					decimalSeparator={decimalSeparator}
+					disabled={true}
+					prefix={prefix ? sign : ''}
+					style={{ border: 'none', backgroundColor: 'transparent' }}
+					suffix={suffix ? sign : ''}
+					thousandSeparator={thousandSeparator}
+					value={value}
+				/>
+			);
+		}
+
 		let blocks = format.map(d => parseInt(d.characterLength)),
 			delimiters = format.map(d => d.delimiter);
 		delimiters.pop();
@@ -67,7 +86,7 @@ const Cell = memo(({ other: { editable, fileSize, format, id, multiple, onChange
 				disabled={true}
 				options={{ delimiters, blocks, numericOnly: true }}
 				value={value}
-				style={{ padding: 0, border: 'none', backgroundColor: 'transparent' }}
+				style={{ border: 'none', backgroundColor: 'transparent' }}
 			/>
 		);
 	}
