@@ -25,7 +25,7 @@ export default ({ editable = false, format = [], id, multiple = false, onChange,
 };
 
 const Cell = memo(({ other: { editable, fileSize, format, id, multiple, onChange }, row: { original }, value }) => {
-	const InputNumber = require('@volenday/input-number');
+	const InputNumber = require('@volenday/input-number').default;
 	const { Controller, useForm } = require('react-hook-form');
 	if (typeof value === 'undefined') return null;
 
@@ -99,7 +99,7 @@ const Cell = memo(({ other: { editable, fileSize, format, id, multiple, onChange
 });
 
 const Filter = memo(({ column: { filterValue, setFilter } }) => {
-	const InputNumber = require('@volenday/input-number');
+	const InputNumber = require('@volenday/input-number').default;
 	const { Controller, useForm } = require('react-hook-form');
 	let timeout = null;
 
