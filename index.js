@@ -1,30 +1,32 @@
 import React, { memo, Suspense, useRef } from 'react';
 import { Skeleton } from 'antd';
-import Cleave from 'cleave.js/react';
 import prettyBytes from 'pretty-bytes';
-import { Controller, useForm } from 'react-hook-form';
-import InputNumber from '@volenday/input-number';
-import CurrencyInput from 'react-currency-input';
 
 import './styles.css';
+
+const browser = typeof process.browser !== 'undefined' ? process.browser : true;
 
 export default ({ editable = false, format = [], id, multiple = false, onChange, fileSize, ...defaultProps }) => {
 	return {
 		...defaultProps,
-		Cell: props => (
-			<Suspense fallback={<Skeleton active={true} paragraph={null} />}>
-				<Cell {...props} other={{ editable, fileSize, format, id, multiple, onChange }} />
-			</Suspense>
-		),
-		Filter: props => (
-			<Suspense fallback={<Skeleton active={true} paragraph={null} />}>
-				<Filter {...props} />
-			</Suspense>
-		)
+		Cell: props =>
+			browser ? (
+				<Suspense fallback={<Skeleton active={true} paragraph={null} />}>
+					<Cell {...props} other={{ editable, fileSize, format, id, multiple, onChange }} />
+				</Suspense>
+			) : null,
+		Filter: props =>
+			browser ? (
+				<Suspense fallback={<Skeleton active={true} paragraph={null} />}>
+					<Filter {...props} />
+				</Suspense>
+			) : null
 	};
 };
 
 const Cell = memo(({ other: { editable, fileSize, format, id, multiple, onChange }, row: { original }, value }) => {
+	const InputNumber = require('@volenday/input-number').default;
+	const { Controller, useForm } = require('react-hook-form');
 	if (typeof value === 'undefined') return null;
 
 	if (fileSize) return <span>{prettyBytes(value ? value : 0)}</span>;
@@ -60,6 +62,8 @@ const Cell = memo(({ other: { editable, fileSize, format, id, multiple, onChange
 	}
 
 	if (format.length !== 0) {
+		const Cleave = require('cleave.js/react');
+		const CurrencyInput = require('react-currency-input');
 		const withCurrency = !!format.filter(d => d.type === 'currency').length;
 
 		if (withCurrency) {
@@ -95,6 +99,8 @@ const Cell = memo(({ other: { editable, fileSize, format, id, multiple, onChange
 });
 
 const Filter = memo(({ column: { filterValue, setFilter } }) => {
+	const InputNumber = require('@volenday/input-number').default;
+	const { Controller, useForm } = require('react-hook-form');
 	let timeout = null;
 
 	const formRef = useRef();
