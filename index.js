@@ -63,7 +63,7 @@ const Cell = memo(({ other: { editable, fileSize, format, id, multiple, onChange
 
 	if (format.length !== 0) {
 		const Cleave = require('cleave.js/react');
-		const CurrencyInput = require('react-currency-input');
+		const CurrencyInput = require('react-currency-input').default;
 		const withCurrency = !!format.filter(d => d.type === 'currency').length;
 
 		if (withCurrency) {
