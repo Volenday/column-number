@@ -6,13 +6,23 @@ import './styles.css';
 
 const browser = typeof process.browser !== 'undefined' ? process.browser : true;
 
-export default ({ editable = false, format = [], id, multiple = false, onChange, fileSize, ...defaultProps }) => {
+export default ({
+	editable = false,
+	format = [],
+	id,
+	multiple = false,
+	onChange,
+	fileSize,
+	prefix,
+	suffix,
+	...defaultProps
+}) => {
 	return {
 		...defaultProps,
 		Cell: props =>
 			browser ? (
 				<Suspense fallback={<Skeleton active={true} paragraph={null} />}>
-					<Cell {...props} other={{ editable, fileSize, format, id, multiple, onChange }} />
+					<Cell {...props} other={{ editable, fileSize, format, id, multiple, prefix, suffix, onChange }} />
 				</Suspense>
 			) : null,
 		Filter: props =>
@@ -24,79 +34,85 @@ export default ({ editable = false, format = [], id, multiple = false, onChange,
 	};
 };
 
-const Cell = memo(({ other: { editable, fileSize, format, id, multiple, onChange }, row: { original }, value }) => {
-	const InputNumber = require('@volenday/input-number').default;
-	const { Controller, useForm } = require('react-hook-form');
-	if (typeof value === 'undefined') return null;
+const Cell = memo(
+	({ other: { editable, fileSize, format, id, multiple, onChange, prefix, suffix }, row: { original }, value }) => {
+		const InputNumber = require('@volenday/input-number').default;
+		const { Controller, useForm } = require('react-hook-form');
+		if (typeof value === 'undefined') return null;
 
-	if (fileSize) return <span>{prettyBytes(value ? value : 0)}</span>;
+		if (fileSize) return <span>{prettyBytes(value ? value : 0)}</span>;
 
-	if (editable && !multiple) {
-		const formRef = useRef();
-		const originalValue = value;
-		const { control, handleSubmit } = useForm({ defaultValues: { [id]: value } });
-		const onSubmit = values => onChange({ ...values, Id: original.Id });
+		if (editable && !multiple) {
+			const formRef = useRef();
+			const originalValue = value;
+			const { control, handleSubmit } = useForm({ defaultValues: { [id]: value } });
+			const onSubmit = values => onChange({ ...values, Id: original.Id });
 
-		return (
-			<form onSubmit={handleSubmit(onSubmit)} ref={formRef} style={{ width: '100%' }}>
-				<Controller
-					control={control}
-					name={id}
-					render={({ onChange, name, value }) => (
-						<InputNumber
-							format={format}
-							id={name}
-							onBlur={() =>
-								originalValue !== value &&
-								formRef.current.dispatchEvent(new Event('submit', { cancelable: true }))
-							}
-							onChange={e => onChange(e.target.value)}
-							onPressEnter={e => e.target.blur()}
-							withLabel={false}
-							value={value}
-						/>
-					)}
-				/>
-			</form>
-		);
-	}
-
-	if (format.length !== 0) {
-		const Cleave = require('cleave.js/react');
-		const CurrencyInput = require('react-currency-input').default;
-		const withCurrency = !!format.filter(d => d.type === 'currency').length;
-
-		if (withCurrency) {
-			const { decimalSeparator, prefix, sign, suffix, thousandSeparator } = format[0];
 			return (
-				<CurrencyInput
-					className="ant-input"
-					decimalSeparator={decimalSeparator}
+				<form onSubmit={handleSubmit(onSubmit)} ref={formRef} style={{ width: '100%' }}>
+					<Controller
+						control={control}
+						name={id}
+						render={({ onChange, name, value }) => (
+							<InputNumber
+								format={format}
+								id={name}
+								onBlur={() =>
+									originalValue !== value &&
+									formRef.current.dispatchEvent(new Event('submit', { cancelable: true }))
+								}
+								onChange={e => onChange(e.target.value)}
+								onPressEnter={e => e.target.blur()}
+								withLabel={false}
+								value={value}
+							/>
+						)}
+					/>
+				</form>
+			);
+		}
+
+		if (format.length !== 0) {
+			const Cleave = require('cleave.js/react');
+			const CurrencyInput = require('react-currency-input').default;
+			const withCurrency = !!format.filter(d => d.type === 'currency').length;
+
+			if (withCurrency) {
+				const { decimalSeparator, prefix, sign, suffix, thousandSeparator } = format[0];
+				return (
+					<CurrencyInput
+						className="ant-input"
+						decimalSeparator={decimalSeparator}
+						disabled={true}
+						prefix={prefix ? sign : ''}
+						style={{ border: 'none', backgroundColor: 'transparent' }}
+						suffix={suffix ? sign : ''}
+						thousandSeparator={thousandSeparator}
+						value={value}
+					/>
+				);
+			}
+
+			let blocks = format.map(d => parseInt(d.characterLength)),
+				delimiters = format.map(d => d.delimiter);
+			delimiters.pop();
+			return (
+				<Cleave
 					disabled={true}
-					prefix={prefix ? sign : ''}
-					style={{ border: 'none', backgroundColor: 'transparent' }}
-					suffix={suffix ? sign : ''}
-					thousandSeparator={thousandSeparator}
+					options={{ delimiters, blocks, numericOnly: true }}
 					value={value}
+					style={{ border: 'none', backgroundColor: 'transparent' }}
 				/>
 			);
 		}
 
-		let blocks = format.map(d => parseInt(d.characterLength)),
-			delimiters = format.map(d => d.delimiter);
-		delimiters.pop();
-		return (
-			<Cleave
-				disabled={true}
-				options={{ delimiters, blocks, numericOnly: true }}
-				value={value}
-				style={{ border: 'none', backgroundColor: 'transparent' }}
-			/>
-		);
-	}
+		if (prefix) return <span>{`${prefix}: ${value}`}</span>;
+		if (suffix) return <span>{`${value} - ${suffix}`}</span>;
+		if (prefix && suffix) return <span>{`${prefix}: ${value} - ${suffix}`}</span>;
 
-	return <span>{value}</span>;
-});
+		return <span>{value}</span>;
+	}
+);
 
 const Filter = memo(({ column: { filterValue, setFilter } }) => {
 	const InputNumber = require('@volenday/input-number').default;
