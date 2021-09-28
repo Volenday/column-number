@@ -61,7 +61,8 @@ module.exports = {
 		'pretty-bytes': 'pretty-bytes',
 		react: 'react',
 		'react-currency-input': 'react-currency-input',
-		'react-hook-form': 'react-hook-form'
+		'react-hook-form': 'react-hook-form',
+		'react-window':'react-window'
 	},
 	plugins: [
 		new webpack.optimize.AggressiveMergingPlugin(),

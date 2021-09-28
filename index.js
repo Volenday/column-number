@@ -2,11 +2,21 @@ import React, { memo, Suspense, useRef } from 'react';
 import { Skeleton } from 'antd';
 import prettyBytes from 'pretty-bytes';
 
-import './styles.css';
-
 const browser = typeof process.browser !== 'undefined' ? process.browser : true;
 
-export default ({ editable = false, format = [], id, multiple = false, onChange, fileSize, ...defaultProps }) => {
+if (browser) require('./style.css');
+import Filter from './filter';
+
+const ColumnNumber = ({
+	editable = false,
+	format = [],
+	id,
+	list = [],
+	multiple = false,
+	onChange,
+	fileSize,
+	...defaultProps
+}) => {
 	return {
 		...defaultProps,
 		Cell: props =>
@@ -18,7 +28,7 @@ export default ({ editable = false, format = [], id, multiple = false, onChange,
 		Filter: props =>
 			browser ? (
 				<Suspense fallback={<Skeleton active={true} paragraph={null} />}>
-					<Filter {...props} />
+					<Filter {...props} other={{ fileSize, id, list }} />
 				</Suspense>
 			) : null
 	};
@@ -98,42 +108,4 @@ const Cell = memo(({ other: { editable, fileSize, format, id, multiple, onChange
 	return <span>{value}</span>;
 });
 
-const Filter = memo(({ column: { filterValue, setFilter } }) => {
-	const InputNumber = require('@volenday/input-number').default;
-	const { Controller, useForm } = require('react-hook-form');
-	let timeout = null;
-
-	const formRef = useRef();
-	const { control, handleSubmit } = useForm({ defaultValues: { filter: filterValue ? filterValue : '' } });
-	const onSubmit = values => setFilter(values.filter);
-
-	return (
-		<form onSubmit={handleSubmit(onSubmit)} ref={formRef} style={{ width: '100%' }}>
-			<Controller
-				control={control}
-				name="filter"
-				render={({ onChange, value, name }) => (
-					<InputNumber
-						id={name}
-						onChange={e => {
-							onChange(e.target.value);
-							if (value !== '' && e.target.value === '') {
-								formRef.current.dispatchEvent(new Event('submit', { cancelable: true }));
-							} else {
-								timeout && clearTimeout(timeout);
-								timeout = setTimeout(
-									() => formRef.current.dispatchEvent(new Event('submit', { cancelable: true })),
-									300
-								);
-							}
-						}}
-						onPressEnter={() => formRef.current.dispatchEvent(new Event('submit', { cancelable: true }))}
-						placeholder="Search..."
-						withLabel={false}
-						value={value}
-					/>
-				)}
-			/>
-		</form>
-	);
-});
+export default ColumnNumber;
