@@ -54,6 +54,7 @@ module.exports = {
 		libraryTarget: 'commonjs2'
 	},
 	externals: {
+		'@ant-design/icons': '@ant-design/icons',
 		'@volenday/input-number': '@volenday/input-number',
 		antd: 'antd',
 		'cleave.js': 'cleave.js',
@@ -62,7 +63,7 @@ module.exports = {
 		react: 'react',
 		'react-currency-input': 'react-currency-input',
 		'react-hook-form': 'react-hook-form',
-		'react-window':'react-window'
+		'react-window': 'react-window'
 	},
 	plugins: [
 		new webpack.optimize.AggressiveMergingPlugin(),
