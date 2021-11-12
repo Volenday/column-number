@@ -55,14 +55,12 @@ module.exports = {
 	},
 	externals: {
 		'@ant-design/icons': '@ant-design/icons',
-		'@volenday/input-number': '@volenday/input-number',
 		antd: 'antd',
 		'cleave.js': 'cleave.js',
 		'cleave.js/react': 'cleave.js/react',
 		'pretty-bytes': 'pretty-bytes',
 		react: 'react',
 		'react-currency-input': 'react-currency-input',
-		'react-hook-form': 'react-hook-form',
 		'react-window': 'react-window'
 	},
 	plugins: [
