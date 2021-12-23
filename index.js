@@ -12,6 +12,7 @@ const ColumnNumber = ({
 	format = [],
 	id,
 	list = [],
+	loading = false,
 	multiple = false,
 	onChange,
 	fileSize,
@@ -28,7 +29,7 @@ const ColumnNumber = ({
 		Filter: props =>
 			browser ? (
 				<Suspense fallback={<Skeleton active={true} paragraph={null} />}>
-					<Filter {...props} other={{ fileSize, id, list }} />
+					<Filter {...props} other={{ fileSize, id, list }} loading={loading} />
 				</Suspense>
 			) : null
 	};
